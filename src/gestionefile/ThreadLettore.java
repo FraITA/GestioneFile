@@ -5,8 +5,6 @@
  */
 package gestionefile;
 
-import java.io.File;
-
 /**
  *
  * @author user
