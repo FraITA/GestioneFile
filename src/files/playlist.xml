@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playlist>
+	<nome> Brani preferiti </nome>
+	<canzone>
+		<titolo> Personal Jesus </titolo>
+		<autore> Depeche Mode </autore>
+		<anno> 1990 </anno>
+	</canzone>
+	<canzone>
+		<titolo> Starlight </titolo>
+		<autore> Muse </autore>
+		<anno> 2006 </anno>
+	</canzone>
+	<canzone>
+		<titolo> Back In Black </titolo>
+		<autore> AC/DC </autore>
+		<anno> 1980 </anno>
+	</canzone>
+</playlist>
