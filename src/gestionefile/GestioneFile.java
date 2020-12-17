@@ -19,6 +19,8 @@ public class GestioneFile {
 	
 	public static String content = "";
 	
+	public static String ext = "";
+	
 	/**
 	 * @param args the command line arguments
 	 */
@@ -32,19 +34,18 @@ public class GestioneFile {
 			ThreadLettore tr = new ThreadLettore(gestore);
 			ThreadScrittore tw = new ThreadScrittore(gestore);
 			
-			String ext = "";
+			String ext;
 			boolean flag = false;
 			String[] exts = {"xml", "csv", "json"};
-			String str = "";
 					
 			do{
 				try {
 					System.out.println("Inserire nome file (con estensione XML, JSON o CSV)");
-					str = bufferedReader.readLine();
+					ext = bufferedReader.readLine();
 					
 					for(String s : exts){
-						ext = str.split(".")[1];
 						if(ext.equals(s)){
+							GestioneFile.ext = ext;
 							flag = true;
 						}
 					}
@@ -53,7 +54,7 @@ public class GestioneFile {
 						System.err.println("Inserimento non valido");
 					}
 				} catch (IOException ex) {
-					Logger.getLogger(GestioneFile.class.getName()).log(Level.SEVERE, null, ex);
+					ex.printStackTrace();
 				}
 			}while(!flag);
 			

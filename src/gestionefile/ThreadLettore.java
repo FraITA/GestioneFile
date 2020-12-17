@@ -27,7 +27,7 @@ public class ThreadLettore extends Thread{
 		synchronized(gestore){
 			String content;
 		
-			gestore.setFile("src/files/playlist.xml");
+			gestore.setFile("src/files/playlist." + GestioneFile.ext);
 		
 			content = gestore.leggiFile();
 		

@@ -33,7 +33,7 @@ public class ThreadScrittore extends Thread{
 		}
 		
 		synchronized(gestore){
-			gestore.setFile("src/files/header.xml");
+			gestore.setFile("src/files/header." + GestioneFile.ext);
 			
 			gestore.scriviFile(GestioneFile.content);
 			
