@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="GestioneFile">
+  <ClassDiagramComponents>
+    <Class name="GestoreFile" package="" visibility="public" xPosition="309.0" yPosition="357.0">
+      <Fields>
+        <Field name="file" type="File" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="leggiFile" returnType="String" visibility="public" isSynchronized="true"/>
+        <Method name="scriviFile" returnType="String" visibility="public" isSynchronized="true">
+          <Argument type="String" name="content"/>
+        </Method>
+        <Method name="setFile" returnType="String" visibility="public" isSynchronized="true">
+          <Argument type="String" name="fileName"/>
+        </Method>
+        <Method name="setFile" returnType="File" visibility="public" isSynchronized="true">
+          <Argument type="File" name="file"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Thread" package="" visibility="public" xPosition="325.0" yPosition="44.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="run" returnType="void" visibility="public"/>
+        <Method name="start" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="ThreadLettore" package="" visibility="public" xPosition="47.0" yPosition="212.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="run" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="ThreadScrittore" package="" visibility="public" xPosition="565.0" yPosition="223.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="run" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="GestioneFile" package="" visibility="public" xPosition="325.0" yPosition="201.0">
+      <Fields>
+        <Field name="content" type="String" visibility="public" isStatic="true"/>
+        <Field name="ext" type="String" visibility="public" isStatic="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation name="Passa dati" source="ThreadLettore" target="GestioneFile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="ThreadScrittore" target="Thread"/>
+    <UseRelation name="Utilizza" source="ThreadLettore" target="GestoreFile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="Ottiene dati" source="ThreadScrittore" target="GestioneFile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="ThreadLettore" target="Thread"/>
+    <UseRelation name="Utilizza" source="ThreadScrittore" target="GestoreFile" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
