@@ -5,35 +5,46 @@
  */
 package gestionefile;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  *
  * @author user
  */
 public class ThreadLettore extends Thread{
 	
-	public final GestoreFile gestore;
+	private final GestoreFile gestore;
 	
-	public ThreadLettore(GestoreFile gestore){
+	private final Dati dati;
+	
+	public ThreadLettore(GestoreFile gestore, Dati dati){
 		this.gestore = gestore;
+		this.dati = dati;
 	}
 	
-	public ThreadLettore(String name, GestoreFile gestore){
+	public ThreadLettore(String name, GestoreFile gestore, Dati dati){
 		super(name);
 		this.gestore = gestore;
+		this.dati = dati;
 	}
 	
+	/**
+	 * Metodo che legge il file e inserisce il suo contenuto
+	 * nella risorsa condivisa.
+	 */
 	@Override
 	public void run(){
-		synchronized(gestore){
-			String content;
+		synchronized(dati){
+			ArrayList<HashMap<String,String>> canzoni;
+			
+			synchronized(gestore){
+				canzoni = gestore.parse();
+			}
 		
-			gestore.setFile("src/files/playlist." + GestioneFile.ext);
+			//content = content.split("\\r?\\n")[0];
 		
-			content = gestore.leggiFile();
-		
-			content = content.split("\\r?\\n")[0];
-		
-			GestioneFile.content = content;
+			dati.setDocument(canzoni);
 		}
 	}
 	

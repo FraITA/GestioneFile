@@ -2,25 +2,27 @@
 
 <ClassDiagram name="GestioneFile">
   <ClassDiagramComponents>
-    <Class name="GestoreFile" package="" visibility="public" xPosition="309.0" yPosition="357.0">
+    <Class name="GestoreFile" package="" visibility="public" xPosition="668.0" yPosition="570.0">
       <Fields>
         <Field name="file" type="File" visibility="private"/>
       </Fields>
-      <Constructors/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="fileName"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="File" name="file"/>
+        </Constructor>
+      </Constructors>
       <Methods>
         <Method name="leggiFile" returnType="String" visibility="public" isSynchronized="true"/>
         <Method name="scriviFile" returnType="String" visibility="public" isSynchronized="true">
           <Argument type="String" name="content"/>
         </Method>
-        <Method name="setFile" returnType="String" visibility="public" isSynchronized="true">
-          <Argument type="String" name="fileName"/>
-        </Method>
-        <Method name="setFile" returnType="File" visibility="public" isSynchronized="true">
-          <Argument type="File" name="file"/>
-        </Method>
+        <Method name="parse" returnType="HashMap" visibility="public"/>
       </Methods>
     </Class>
-    <Class name="Thread" package="" visibility="public" xPosition="325.0" yPosition="44.0">
+    <Class name="Thread" package="" visibility="public" xPosition="401.0" yPosition="13.0">
       <Fields/>
       <Constructors/>
       <Methods>
@@ -28,39 +30,119 @@
         <Method name="start" returnType="void" visibility="public"/>
       </Methods>
     </Class>
-    <Class name="ThreadLettore" package="" visibility="public" xPosition="47.0" yPosition="212.0">
-      <Fields/>
-      <Constructors/>
-      <Methods>
-        <Method name="run" returnType="void" visibility="public"/>
-      </Methods>
-    </Class>
-    <Class name="ThreadScrittore" package="" visibility="public" xPosition="565.0" yPosition="223.0">
-      <Fields/>
-      <Constructors/>
-      <Methods>
-        <Method name="run" returnType="void" visibility="public"/>
-      </Methods>
-    </Class>
-    <Class name="GestioneFile" package="" visibility="public" xPosition="325.0" yPosition="201.0">
+    <Class name="ThreadLettore" package="" visibility="public" xPosition="13.0" yPosition="223.0">
       <Fields>
-        <Field name="content" type="String" visibility="public" isStatic="true"/>
-        <Field name="ext" type="String" visibility="public" isStatic="true"/>
+        <Field name="dati" type="Dati" visibility="private"/>
+        <Field name="gestore" type="GestoreFile" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="GestoreFile" name="gestore"/>
+          <Argument type="Dati" name="dati"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="name"/>
+          <Argument type="GestoreFile" name="gestore"/>
+          <Argument type="Dati" name="dati"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="run" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="ThreadScrittore" package="" visibility="public" xPosition="696.0" yPosition="223.0">
+      <Fields>
+        <Field name="dati" type="Dati" visibility="private"/>
+        <Field name="gestore" type="GestoreFile" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="GestoreFile" name="gestore"/>
+          <Argument type="Dati" name="dati"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="name"/>
+          <Argument type="GestoreFile" name="gestore"/>
+          <Argument type="Dati" name="dati"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="run" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Dati" package="" visibility="public" xPosition="210.0" yPosition="570.0">
+      <Fields>
+        <Field name="content" type="String" visibility="private"/>
+        <Field name="ext" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="setContent" returnType="String" visibility="public" isSynchronized="true">
+          <Argument type="String" name="content"/>
+        </Method>
+        <Method name="setExt" returnType="String" visibility="public" isSynchronized="true">
+          <Argument type="String" name="ext"/>
+        </Method>
+        <Method name="getExt" returnType="String" visibility="public" isSynchronized="true"/>
+        <Method name="getContent" returnType="String" visibility="public" isSynchronized="true"/>
+      </Methods>
+    </Class>
+    <Class name="ThreadElaboratore" package="" visibility="public" xPosition="422.0" yPosition="223.0">
+      <Fields>
+        <Field name="dati" type="Dati" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Dati" name="dati"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="formattaMappaCanzoni" returnType="void" visibility="public"/>
+        <Method name="votaCanzone" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Parser" package="" visibility="public" xPosition="654.0" yPosition="886.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="parseFromXML" returnType="File" visibility="public" isStatic="true">
+          <Argument type="File" name="file"/>
+        </Method>
+        <Method name="parseFromJSON" returnType="File" visibility="public" isStatic="true">
+          <Argument type="File" name="file"/>
+        </Method>
+        <Method name="parseCSV" returnType="File" visibility="public" isStatic="true">
+          <Argument type="File" name="file"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="GestoreFileBuilder" package="" visibility="public" xPosition="972.0" yPosition="598.0">
+      <Fields>
+        <Field name="fileMap" type="HashMap" visibility="private" isStatic="true"/>
       </Fields>
       <Constructors/>
       <Methods>
-        <Method name="main" returnType="void" visibility="public" isStatic="true">
-          <Argument type="String" name="args"/>
+        <Method name="createGestoreFile" returnType="GestoreFile" visibility="public" isStatic="true">
+          <Argument type="String" name="fileName"/>
+        </Method>
+        <Method name="createGestoreFile" returnType="GestoreFile" visibility="public" isStatic="true">
+          <Argument type="File" name="file"/>
         </Method>
       </Methods>
     </Class>
   </ClassDiagramComponents>
   <ClassDiagramRelations>
-    <UseRelation name="Passa dati" source="ThreadLettore" target="GestioneFile" sourceCardinality="1..1" targetCardinality="1..1"/>
     <IsRelation name="is" source="ThreadScrittore" target="Thread"/>
-    <UseRelation name="Utilizza" source="ThreadLettore" target="GestoreFile" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="Ottiene dati" source="ThreadScrittore" target="GestioneFile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="Possiede" source="ThreadScrittore" target="GestoreFile" type="Composition" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="ThreadElaboratore" target="Thread"/>
+    <HasRelation name="Possiede" source="ThreadLettore" target="GestoreFile" type="Composition" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <UseRelation name="Use" source="GestoreFile" target="Parser" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="Possiede" source="ThreadScrittore" target="Dati" type="Composition" sourceCardinality="0..1" targetCardinality="1..1"/>
     <IsRelation name="is" source="ThreadLettore" target="Thread"/>
-    <UseRelation name="Utilizza" source="ThreadScrittore" target="GestoreFile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="Crea" source="GestoreFileBuilder" target="GestoreFile" type="Aggregation" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="Possiede" source="ThreadElaboratore" target="Dati" type="Composition" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="Possiede" source="ThreadLettore" target="Dati" type="Composition" sourceCardinality="0..1" targetCardinality="1..1"/>
   </ClassDiagramRelations>
 </ClassDiagram>

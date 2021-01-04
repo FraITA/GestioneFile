@@ -8,8 +8,6 @@ package gestionefile;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -17,49 +15,51 @@ import java.util.logging.Logger;
  */
 public class GestioneFile {
 	
-	public static String content = "";
-	
-	public static String ext = "";
-	
 	/**
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-			GestoreFile gestore = new GestoreFile();
-			
-			InputStreamReader inputReader = new InputStreamReader(System.in);
+		
+		String ext = "";
+		boolean flag = false;
+		String[] exts = {"xml", "csv", "json"};
 
-			BufferedReader bufferedReader = new BufferedReader(inputReader);
-			
-			ThreadLettore tr = new ThreadLettore(gestore);
-			ThreadScrittore tw = new ThreadScrittore(gestore);
-			
-			String ext;
-			boolean flag = false;
-			String[] exts = {"xml", "csv", "json"};
-					
-			do{
-				try {
-					System.out.println("Inserire nome file (con estensione XML, JSON o CSV)");
-					ext = bufferedReader.readLine();
-					
-					for(String s : exts){
-						if(ext.equals(s)){
-							GestioneFile.ext = ext;
-							flag = true;
-						}
+		InputStreamReader inputReader = new InputStreamReader(System.in);
+		BufferedReader bufferedReader = new BufferedReader(inputReader);
+
+		Dati dati = new Dati();
+
+		do{
+			try {
+				System.out.println("Inserire nome file (con estensione XML, JSON o CSV)");
+				ext = bufferedReader.readLine();
+
+				for(String s : exts){
+					if(ext.equals(s)){
+						flag = true;
+						dati.setExt(ext);
 					}
-					
-					if(!flag){
-						System.err.println("Inserimento non valido");
-					}
-				} catch (IOException ex) {
-					ex.printStackTrace();
 				}
-			}while(!flag);
-			
-			tr.start();
-			tw.start();
+
+				if(!flag){
+					System.err.println("Inserimento non valido");
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}while(!flag);
+		
+		GestoreFile gestoreReader = GestoreFileBuilder.createGestoreFile("src/files/playlist." + ext);
+		GestoreFile gestoreWriter = GestoreFileBuilder.createGestoreFile("src/files/header." + ext);
+
+
+		ThreadLettore tr = new ThreadLettore(gestoreReader, dati);
+		ThreadElaboratore te = new ThreadElaboratore(dati);
+		ThreadScrittore tw = new ThreadScrittore(gestoreWriter, dati);
+
+		tr.start();
+		//te.start();
+		//tw.start();
 	}
 	
 }
