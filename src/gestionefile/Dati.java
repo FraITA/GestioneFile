@@ -18,13 +18,13 @@ public class Dati {
 	 */
 	private String content;
 	
-	private ArrayList<HashMap<String,String>> document;
+	private ArrayList<HashMap<String,String>> canzone;
 	
 	private String ext;
 	
 	public Dati(){
 		this.content = "";
-		this.document = null;
+		this.canzone = null;
 	}
 	
 	public synchronized String getExt() {
@@ -35,8 +35,8 @@ public class Dati {
 		return this.content;
 	}
 	
-	public synchronized ArrayList<HashMap<String,String>> getDocument(){
-		return this.document;
+	public synchronized ArrayList<HashMap<String,String>> getCanzone(){
+		return this.canzone;
 	}
 
 	public synchronized void setExt(String ext) {
@@ -47,7 +47,7 @@ public class Dati {
 		this.content = content;
 	}
 	
-	public synchronized void setDocument(ArrayList<HashMap<String,String>> document){
-		this.document = document;
+	public synchronized void setCanzone(ArrayList<HashMap<String,String>> canzone){
+		this.canzone = canzone;
 	}
 }

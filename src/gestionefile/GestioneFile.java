@@ -50,7 +50,7 @@ public class GestioneFile {
 		}while(!flag);
 		
 		GestoreFile gestoreReader = GestoreFileBuilder.createGestoreFile("src/files/playlist." + ext);
-		GestoreFile gestoreWriter = GestoreFileBuilder.createGestoreFile("src/files/header." + ext);
+		GestoreFile gestoreWriter = GestoreFileBuilder.createGestoreFile("src/files/votazione." + ext);
 
 
 		ThreadLettore tr = new ThreadLettore(gestoreReader, dati);
@@ -58,8 +58,8 @@ public class GestioneFile {
 		ThreadScrittore tw = new ThreadScrittore(gestoreWriter, dati);
 
 		tr.start();
-		//te.start();
-		//tw.start();
+		te.start();
+		tw.start();
 	}
 	
 }

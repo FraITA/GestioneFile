@@ -5,6 +5,7 @@
  */
 package gestionefile;
 
+import org.json.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -113,6 +114,8 @@ public class GestoreFile {
 		switch (ext) {
 			case "xml":
 				return parseFromXML();
+			case "json":
+				return parseFromJSON();
 		}
 
 		return null;
@@ -147,4 +150,14 @@ public class GestoreFile {
 		return null;
 	}
 
+	
+	private synchronized ArrayList<HashMap<String,String>> parseFromJSON(){
+		ArrayList<HashMap<String,String>> canzoni;
+		String content = leggiFile().replace('\n', ' ');
+		JSONObject ogg =  new JSONObject(content);
+		HashMap map = (HashMap) ogg.toMap();
+		canzoni = (ArrayList) map.get("playlist");
+		
+		return canzoni;
+	}
 }

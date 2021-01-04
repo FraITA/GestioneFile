@@ -31,7 +31,7 @@ public class ThreadElaboratore extends Thread{
 	}
 	
 	private void votaCanzone(){
-		ArrayList<HashMap<String,String>> canzoni = dati.getDocument();
+		ArrayList<HashMap<String,String>> canzoni = dati.getCanzone();
 		
 		InputStreamReader inputReader = new InputStreamReader(System.in);
 		BufferedReader bufferedReader = new BufferedReader(inputReader);
@@ -85,6 +85,9 @@ public class ThreadElaboratore extends Thread{
 			case "xml":
 				risposta = formattaRispostaXML(i);
 				break;
+			case "json":
+				risposta = formattaRispostaJSON(i);
+				break;
 		}
 		
 		dati.setContent(risposta);
@@ -93,21 +96,42 @@ public class ThreadElaboratore extends Thread{
 	private String formattaRispostaXML(int i){
 		String content = "";
 		
-		HashMap<String,String> canzone = dati.getDocument().get(i);
+		HashMap<String,String> canzone = dati.getCanzone().get(i);
 		
 		content += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
 		
 		content += "<canzone_votata>\n";
 		
-		content += "<titolo>" + canzone.get("titolo") + "</titolo>\n";
+		content += "	<titolo>" + canzone.get("titolo") + "</titolo>\n";
 		
-		content += "<autore>" + canzone.get("autore") + "</autore>\n";
+		content += "	<autore>" + canzone.get("autore") + "</autore>\n";
 		
-		content += "<anno>" + canzone.get("anno") + "</anno>\n";
+		content += "	<anno>" + canzone.get("anno") + "</anno>\n";
 				
 		content += "</canzone_votata>\n";
 		
 		return content;
 	}
 	
+	private String formattaRispostaJSON(int i){
+		String content = "";
+		
+		HashMap<String,String> canzone = dati.getCanzone().get(i);
+		
+		content += "{\n";
+		
+		content += "	\"canzone votata\" : {\n";
+		
+		content += "		\"titolo\" : \"" + canzone.get("titolo") + "\",\n";
+		
+		content += "		\"autore\" : \"" + canzone.get("autore") + "\",\n";
+		
+		content += "		\"anno\" : \"" + canzone.get("anno") + "\"\n";
+		
+		content += "	}\n";
+		
+		content += "}\n";
+		
+		return content;
+	}
 }

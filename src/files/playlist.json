@@ -1,21 +1,19 @@
-{"playlist" : [
-		{ "canzone" : {
-				"titolo" : "Personal Jesus",
-				"autore" : "Depeche Mode",
-				"anno" : 1990
-			}
+{
+	"playlist" : [
+		{
+			"titolo" : "Personal Jesus",
+			"autore" : "Depeche Mode",
+			"anno" : "1990"
 		},
-		{ "canzone" : {
-				"titolo" : "Starlight",
-				"autore" : "Muse",
-				"anno" : 2006
-			}
+		{
+			"titolo" : "Starlight",
+			"autore" : "Muse",
+			"anno" : "2006"
 		},
-		{ "canzone" : {
-				"titolo" : "Back In Black",
-				"autore" : "AC/DC",
-				"anno" : 1980
-			}
+		{
+			"titolo" : "Back In Black",
+			"autore" : "AC/DC",
+			"anno" : "1980"
 		}
 	]
 }

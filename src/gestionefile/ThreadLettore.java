@@ -36,15 +36,13 @@ public class ThreadLettore extends Thread{
 	@Override
 	public void run(){
 		synchronized(dati){
-			ArrayList<HashMap<String,String>> canzoni;
+			ArrayList<HashMap<String,String>> canzone;
 			
 			synchronized(gestore){
-				canzoni = gestore.parse();
+				canzone = gestore.parse();
 			}
 		
-			//content = content.split("\\r?\\n")[0];
-		
-			dati.setDocument(canzoni);
+			dati.setCanzone(canzone);
 		}
 	}
 	
