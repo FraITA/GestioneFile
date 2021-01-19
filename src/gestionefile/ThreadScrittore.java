@@ -33,21 +33,51 @@ public class ThreadScrittore extends Thread{
 	@Override
 	public void run(){
 		
-		while(true){
-				if(!dati.getContent().equals("")){
-					break;
+		switch(dati.getExt()){
+			case "xml":
+				while(true){
+					if(dati.getDom().hasChildNodes()){
+						break;
+					}
 				}
-			}
+				break;
+				
+			default:
+				while(true){
+					if(!dati.getContent().equals("")){
+						break;
+					}
+				}
+				break;
+		}
 		
 		synchronized(dati){
 			
-			synchronized(gestore){
-				gestore.scriviFile(dati.getContent());
+			switch(dati.getExt()){
+				case "xml":
+					scriviFileXML();
+					break;
+				default:
+					scriviFile();
+					break;
 			}
-			
-			dati.setContent("");
 		}
 		
 	}
+	
+	private void scriviFile(){
+		synchronized(gestore){
+			gestore.scriviFile(dati.getContent());
+		}
+			
+		dati.setContent("");
+	}
+	
+	private void scriviFileXML(){
+		synchronized(gestore){
+			gestore.scriviXML(dati.getDom());
+		}
+	}
+	
 	
 }

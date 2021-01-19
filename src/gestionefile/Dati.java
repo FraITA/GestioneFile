@@ -7,6 +7,12 @@ package gestionefile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
 
 /**
  * Classe che fa da risorsa condivisa tra i thread.
@@ -22,9 +28,21 @@ public class Dati {
 	
 	private String ext;
 	
+	private Document dom;
+	
 	public Dati(){
 		this.content = "";
 		this.canzone = null;
+		this.ext = "";
+		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = null;
+		try {
+			db = dbf.newDocumentBuilder();
+		} catch (ParserConfigurationException ex) {
+			Logger.getLogger(Dati.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		dom = db.newDocument();
 	}
 	
 	public synchronized String getExt() {
@@ -38,6 +56,10 @@ public class Dati {
 	public synchronized ArrayList<HashMap<String,String>> getCanzone(){
 		return this.canzone;
 	}
+	
+	public synchronized Document getDom() {
+		return dom;
+	}
 
 	public synchronized void setExt(String ext) {
 		this.ext = ext;
@@ -49,5 +71,9 @@ public class Dati {
 	
 	public synchronized void setCanzone(ArrayList<HashMap<String,String>> canzone){
 		this.canzone = canzone;
+	}
+	
+	public synchronized void setDom(Document dom) {
+		this.dom = dom;
 	}
 }

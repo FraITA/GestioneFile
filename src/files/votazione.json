@@ -1,7 +1,5 @@
-{
-	"canzone votata" : {
-		"titolo" : "Back In Black",
-		"autore" : "AC/DC",
-		"anno" : "1980"
-	}
-}
+{"canzone_votata": {
+    "titolo": "Back In Black",
+    "anno": "1980",
+    "autore": "AC/DC"
+}}

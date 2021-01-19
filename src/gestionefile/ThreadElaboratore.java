@@ -10,6 +10,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  *
@@ -25,6 +31,13 @@ public class ThreadElaboratore extends Thread{
 	
 	@Override
 	public void run(){
+		
+		while(true){
+			if(dati.getCanzone() != null){
+				break;
+			}
+		}
+		
 		synchronized(dati){
 			votaCanzone();
 		}
@@ -79,38 +92,56 @@ public class ThreadElaboratore extends Thread{
 	private void formattaRisposta(int i){
 		String ext = dati.getExt();
 	
-		String risposta = "";
+		Object risposta = "";
 		
 		switch(ext){
 			case "xml":
-				risposta = formattaRispostaXML(i);
+				risposta = (Document) formattaRispostaXML(i);
+				dati.setDom((Document) risposta);
 				break;
 			case "json":
-				risposta = formattaRispostaJSON(i);
+				risposta = (String) formattaRispostaJSON(i);
+				dati.setContent((String)risposta);
 				break;
 		}
-		
-		dati.setContent(risposta);
 	}
 	
-	private String formattaRispostaXML(int i){
-		String content = "";
-		
+	private Document formattaRispostaXML(int i){
+		Document dom = null;
+		Element e;
+		DocumentBuilderFactory dbf;
+		DocumentBuilder db;
 		HashMap<String,String> canzone = dati.getCanzone().get(i);
+		try {
+			
+			// instance of a DocumentBuilderFactory
+			dbf = DocumentBuilderFactory.newInstance();
+			
+			db = dbf.newDocumentBuilder();
+			// create instance of DOM
+			dom = db.newDocument();
+			
+			Element rootEle = dom.createElement("canzone_votata");
+			
+			e = dom.createElement("titolo");
+			e.appendChild(dom.createTextNode(canzone.get("titolo")));
+			rootEle.appendChild(e);
+			
+			e = dom.createElement("autore");
+			e.appendChild(dom.createTextNode(canzone.get("autore")));
+			rootEle.appendChild(e);
+			
+			e = dom.createElement("anno");
+			e.appendChild(dom.createTextNode(canzone.get("anno")));
+			rootEle.appendChild(e);
+			
+			dom.appendChild(rootEle);
+			
+		} catch (ParserConfigurationException ex) {
+			ex.printStackTrace();
+		}
 		
-		content += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
-		
-		content += "<canzone_votata>\n";
-		
-		content += "	<titolo>" + canzone.get("titolo") + "</titolo>\n";
-		
-		content += "	<autore>" + canzone.get("autore") + "</autore>\n";
-		
-		content += "	<anno>" + canzone.get("anno") + "</anno>\n";
-				
-		content += "</canzone_votata>\n";
-		
-		return content;
+		return dom;
 	}
 	
 	private String formattaRispostaJSON(int i){
@@ -118,19 +149,16 @@ public class ThreadElaboratore extends Thread{
 		
 		HashMap<String,String> canzone = dati.getCanzone().get(i);
 		
-		content += "{\n";
+		JSONObject obj = new JSONObject();
+		JSONObject canzoneVotata = new JSONObject();
 		
-		content += "	\"canzone votata\" : {\n";
+		canzoneVotata.put("titolo", canzone.get("titolo"));
+		canzoneVotata.put("autore", canzone.get("autore"));
+		canzoneVotata.put("anno", canzone.get("anno"));
 		
-		content += "		\"titolo\" : \"" + canzone.get("titolo") + "\",\n";
+		obj.put("canzone_votata", canzoneVotata);
 		
-		content += "		\"autore\" : \"" + canzone.get("autore") + "\",\n";
-		
-		content += "		\"anno\" : \"" + canzone.get("anno") + "\"\n";
-		
-		content += "	}\n";
-		
-		content += "}\n";
+		content = obj.toString(4);
 		
 		return content;
 	}

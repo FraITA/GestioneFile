@@ -9,7 +9,9 @@ import java.io.File;
 import java.util.HashMap;
 
 /**
- *
+ * Classe che ha lo scopo di costruire le istanzedi GestoreFile
+ * e, se esiste già, far ritornare l'oggetto già istanziato
+ * per sincronizzare gli accessi.
  * @author user
  */
 public class GestoreFileBuilder {

@@ -5,16 +5,21 @@
  */
 package gestionefile;
 
+import com.opencsv.CSVReaderHeaderAware;
+import com.opencsv.exceptions.CsvValidationException;
 import org.json.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,7 +28,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*;
 /**
  *
  * @author user
@@ -52,11 +59,6 @@ public class GestoreFile {
 		String output = "";
 		String str;
 
-		if (this.file == null) {
-			System.err.println("File non settato!");
-			return "";
-		}
-
 		try {
 			FileReader fr = new FileReader(this.file);
 			BufferedReader br = new BufferedReader(fr);
@@ -82,11 +84,6 @@ public class GestoreFile {
 	public synchronized void scriviFile(String content) {
 		FileWriter fw = null;
 		BufferedWriter bw = null;
-
-		if (this.file == null) {
-			System.err.println("File non settato!");
-			return;
-		}
 
 		try {
 			fw = new FileWriter(this.file);
@@ -116,6 +113,8 @@ public class GestoreFile {
 				return parseFromXML();
 			case "json":
 				return parseFromJSON();
+			case "csv":
+				return parseFromCSV();
 		}
 
 		return null;
@@ -159,5 +158,43 @@ public class GestoreFile {
 		canzoni = (ArrayList) map.get("playlist");
 		
 		return canzoni;
+	}
+	
+	private synchronized ArrayList<HashMap<String,String>> parseFromCSV(){
+		
+		HashMap<String, String> canzoni = new HashMap();
+		
+		try {
+			canzoni = (HashMap<String, String>) new CSVReaderHeaderAware(new FileReader(this.file)).readMap();
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(GestoreFile.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IOException | CsvValidationException ex) {
+			Logger.getLogger(GestoreFile.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		System.out.println(canzoni.toString());
+		
+		//TODO
+		return null;
+	}
+	
+	public synchronized void scriviXML(Document dom){
+		try {
+            Transformer tr = TransformerFactory.newInstance().newTransformer();
+            tr.setOutputProperty(OutputKeys.INDENT, "yes");
+            tr.setOutputProperty(OutputKeys.METHOD, "xml");
+            tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            tr.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "canzone.dtd");
+            tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+            // send DOM to file
+            tr.transform(new DOMSource(dom), new StreamResult(new FileOutputStream(this.file)));
+
+        } catch (TransformerException te) {
+            System.err.println(te.getMessage());
+			
+        } catch (FileNotFoundException ex) {
+			Logger.getLogger(GestoreFile.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 }
