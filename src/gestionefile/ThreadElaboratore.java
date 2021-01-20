@@ -18,11 +18,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ * Classe che implementa Runnable che elabora i dati letti dal file.
  * @author user
  */
-public class ThreadElaboratore extends Thread{
+public class ThreadElaboratore implements Runnable{
 	
+	/**
+	 * Risorsa condivisa tra i thread.
+	 */
 	private final Dati dati;
 	
 	public ThreadElaboratore(Dati dati){
@@ -32,6 +35,7 @@ public class ThreadElaboratore extends Thread{
 	@Override
 	public void run(){
 		
+		//Controlla se c'è il contenuto da elaborare.
 		while(true){
 			if(dati.getCanzone() != null){
 				break;
@@ -43,6 +47,9 @@ public class ThreadElaboratore extends Thread{
 		}
 	}
 	
+	/**
+	 * Metodo che permette la votazione di una canzone tra le elencate
+	 */
 	private void votaCanzone(){
 		ArrayList<HashMap<String,String>> canzoni = dati.getCanzone();
 		
@@ -57,7 +64,7 @@ public class ThreadElaboratore extends Thread{
 		
 		
 		int i = 0;
-		
+		//Stampa tutte le canzoni con i loro dati
 		for(HashMap<String,String> map : canzoni){
 			String titolo, autore, anno;
 			
@@ -72,6 +79,7 @@ public class ThreadElaboratore extends Thread{
 		
 		int num = 0;
 		
+		//Inserimento numero per votare la canzone
 		do{
 			try {
 				num = Integer.parseInt(bufferedReader.readLine());
@@ -89,6 +97,11 @@ public class ThreadElaboratore extends Thread{
 		formattaRisposta(num);
 	}	
 	
+	/**
+	 * Metodo che formatta la risposta a seconda dell'estensione 
+	 * del file su cui si andrà a scrivere.
+	 * @param i indice canzone votata.
+	 */
 	private void formattaRisposta(int i){
 		String ext = dati.getExt();
 	
@@ -106,6 +119,11 @@ public class ThreadElaboratore extends Thread{
 		}
 	}
 	
+	/**
+	 * Metodo che formatta la risposta in XML.
+	 * @param i indice canzone votata.
+	 * @return documento XML.
+	 */
 	private Document formattaRispostaXML(int i){
 		Document dom = null;
 		Element e;
@@ -144,6 +162,11 @@ public class ThreadElaboratore extends Thread{
 		return dom;
 	}
 	
+	/**
+	 * Metodo che formatta la risposta in JSON.
+	 * @param i indice canzone votata.
+	 * @return Stringa JSON.
+	 */
 	private String formattaRispostaJSON(int i){
 		String content = "";
 		

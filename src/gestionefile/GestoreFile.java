@@ -5,8 +5,6 @@
  */
 package gestionefile;
 
-import com.opencsv.CSVReaderHeaderAware;
-import com.opencsv.exceptions.CsvValidationException;
 import org.json.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -32,7 +30,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 /**
- *
+ * Classe che permette la gestione di un file, tra cui letture, scrittura e parsing.
  * @author user
  */
 public class GestoreFile {
@@ -42,6 +40,10 @@ public class GestoreFile {
 	 */
 	private final File file;
 
+	/**
+	 * Metodo costruttore che crea il file dato il suo nome, per gestirlo.
+	 * @param fileName nome del file da gestire.
+	 */
 	public GestoreFile(String fileName) {
 		this.file = new File(fileName);
 	}
@@ -51,9 +53,9 @@ public class GestoreFile {
 	}
 
 	/**
-	 * Metodo che permette la lettura del file assegnato
+	 * Metodo che permette la lettura del file assegnato senza alcuna formattazione (stringa semplice)
 	 *
-	 * @return contenuto del file
+	 * @return contenuto del file.
 	 */
 	public synchronized String leggiFile() {
 		String output = "";
@@ -77,9 +79,9 @@ public class GestoreFile {
 	}
 
 	/**
-	 * Metodo che scrive sul file assegnato
+	 * Metodo che scrive sul file assegnato un contenuto di tipo stringa semplice.
 	 *
-	 * @param content contenuto da scrivere
+	 * @param content contenuto da scrivere.
 	 */
 	public synchronized void scriviFile(String content) {
 		FileWriter fw = null;
@@ -103,6 +105,10 @@ public class GestoreFile {
 		}
 	}
 
+	/**
+	 * Metodo per fare il parsing del file, data un'estensione consentita a ciò.
+	 * @return contenuto del file formattato.
+	 */
 	public synchronized ArrayList<HashMap<String,String>> parse() {
 		String name = this.file.getName();
 		int dot = name.lastIndexOf('.');
@@ -113,13 +119,15 @@ public class GestoreFile {
 				return parseFromXML();
 			case "json":
 				return parseFromJSON();
-			case "csv":
-				return parseFromCSV();
 		}
 
 		return null;
 	}
 
+	/**
+	 * Metodo specifico per fare il parsing da un file XML.
+	 * @return contenuto formattato del file.
+	 */
 	private synchronized ArrayList<HashMap<String,String>> parseFromXML() {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 
@@ -149,7 +157,10 @@ public class GestoreFile {
 		return null;
 	}
 
-	
+	/**
+	 * Metodo specifico per fare il parsing di un file JSON.
+	 * @return contenuto formattato del file.
+	 */
 	private synchronized ArrayList<HashMap<String,String>> parseFromJSON(){
 		ArrayList<HashMap<String,String>> canzoni;
 		String content = leggiFile().replace('\n', ' ');
@@ -160,24 +171,10 @@ public class GestoreFile {
 		return canzoni;
 	}
 	
-	private synchronized ArrayList<HashMap<String,String>> parseFromCSV(){
-		
-		HashMap<String, String> canzoni = new HashMap();
-		
-		try {
-			canzoni = (HashMap<String, String>) new CSVReaderHeaderAware(new FileReader(this.file)).readMap();
-		} catch (FileNotFoundException ex) {
-			Logger.getLogger(GestoreFile.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (IOException | CsvValidationException ex) {
-			Logger.getLogger(GestoreFile.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		
-		System.out.println(canzoni.toString());
-		
-		//TODO
-		return null;
-	}
-	
+	/**
+	 * Metodo specifico per scrivere un contenuto formattato in XML sul file.
+	 * @param dom documento formattato in XML.
+	 */
 	public synchronized void scriviXML(Document dom){
 		try {
             Transformer tr = TransformerFactory.newInstance().newTransformer();

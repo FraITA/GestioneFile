@@ -20,21 +20,35 @@ import org.w3c.dom.Document;
  */
 public class Dati {
 	/**
-	 * Contenuto di un file
+	 * Contenuto di tipo stringa semplice.
 	 */
 	private String content;
 	
+	/**
+	 * Contenuto del file formattato.
+	 */
 	private ArrayList<HashMap<String,String>> canzone;
 	
+	/**
+	 * Estensione dei file da gestire.
+	 */
 	private String ext;
 	
+	/**
+	 * Documento formattato in XML.
+	 */
 	private Document dom;
 	
+	/**
+	 * Metodo costruttore che prepara tutti gli attributi per gli accessi sincronizzati.
+	 */
 	public Dati(){
 		this.content = "";
 		this.canzone = null;
 		this.ext = "";
 		
+		//Creo un documento vuoto per permettere il controllo con il semaforo
+		//per gestire gli accessi sincronizzati ai dati.
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = null;
 		try {

@@ -9,13 +9,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
+ * Classe che estende Thread che legge il file assegnato.
  * @author user
  */
 public class ThreadLettore extends Thread{
 	
+	/**
+	 * Gestore del file da leggere.
+	 */
 	private final GestoreFile gestore;
 	
+	/**
+	 * Risorsa condivisa tra i thread.
+	 */
 	private final Dati dati;
 	
 	public ThreadLettore(GestoreFile gestore, Dati dati){

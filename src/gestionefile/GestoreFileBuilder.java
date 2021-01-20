@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.HashMap;
 
 /**
- * Classe che ha lo scopo di costruire le istanzedi GestoreFile
+ * Classe che ha lo scopo di costruire le istanze di GestoreFile
  * e, se esiste già, far ritornare l'oggetto già istanziato
  * per sincronizzare gli accessi.
  * @author user
@@ -18,6 +18,12 @@ public class GestoreFileBuilder {
 	
 	public static HashMap<String, GestoreFile> fileMap = new HashMap();
 	
+	/**
+	 * Metodo che crea un oggetto di tipo GestoreFile, controllando se il gestore
+	 * per quel file esiste già.
+	 * @param fileName nome file da gestire.
+	 * @return gestore del file selezionato.
+	 */
 	public static GestoreFile createGestoreFile(String fileName){
 		GestoreFile gestore;
 		
@@ -35,6 +41,12 @@ public class GestoreFileBuilder {
 		
 	}
 	
+	/**
+	 * Metodo che crea un oggetto di tipo GestoreFile, controllando se il gestore
+	 * per quel file esiste già.
+	 * @param file file da gestire.
+	 * @return gestore del file selezionato.
+	 */
 	public static GestoreFile createGestoreFile(File file){
 		GestoreFile gestore;
 		String fileName = file.getName();

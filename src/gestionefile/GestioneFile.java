@@ -10,19 +10,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- *
+ * Classe che contiene il main.
  * @author user
  */
 public class GestioneFile {
 	
 	/**
+	 * Metodo che avvia tutti i thread per l'esecuzione corretta del programma.
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
 		
 		String ext = "";
 		boolean flag = false;
-		String[] exts = {"xml", "csv", "json"};
+		String[] exts = {"xml", "json"};
 
 		InputStreamReader inputReader = new InputStreamReader(System.in);
 		BufferedReader bufferedReader = new BufferedReader(inputReader);
@@ -31,7 +32,7 @@ public class GestioneFile {
 
 		do{
 			try {
-				System.out.println("Inserire nome file (con estensione XML, JSON o CSV)");
+				System.out.println("Inserire estensione (xml/json)");
 				ext = bufferedReader.readLine();
 
 				for(String s : exts){
@@ -54,7 +55,7 @@ public class GestioneFile {
 
 
 		ThreadLettore tr = new ThreadLettore(gestoreReader, dati);
-		ThreadElaboratore te = new ThreadElaboratore(dati);
+		Thread te = new Thread(new ThreadElaboratore(dati));
 		ThreadScrittore tw = new ThreadScrittore(gestoreWriter, dati);
 
 		tr.start();

@@ -7,13 +7,19 @@ package gestionefile;
 
 
 /**
- *
+ * Thread che permette la scrittura su file dei contenuti elaborati.
  * @author user
  */
 public class ThreadScrittore extends Thread{
 	
+	/**
+	 * Gestore del file su cui scrivere.
+	 */
 	private final GestoreFile gestore;
 	
+	/**
+	 * Risorsa condivisa tra i thread.
+	 */
 	private final Dati dati;
 	
 	public ThreadScrittore(GestoreFile gestore, Dati dati){
@@ -33,6 +39,7 @@ public class ThreadScrittore extends Thread{
 	@Override
 	public void run(){
 		
+		//Se il file è di tipo xml, il semaforo controllerà se il Document ha dei nodi figlio
 		switch(dati.getExt()){
 			case "xml":
 				while(true){
@@ -42,6 +49,7 @@ public class ThreadScrittore extends Thread{
 				}
 				break;
 				
+			//Altrimenti controlla la variabile con il contenuto di tipo Stringa
 			default:
 				while(true){
 					if(!dati.getContent().equals("")){
@@ -65,6 +73,9 @@ public class ThreadScrittore extends Thread{
 		
 	}
 	
+	/**
+	 * Metodo che scrive il contenuto di tipo stringa sul file.
+	 */
 	private void scriviFile(){
 		synchronized(gestore){
 			gestore.scriviFile(dati.getContent());
@@ -73,6 +84,9 @@ public class ThreadScrittore extends Thread{
 		dati.setContent("");
 	}
 	
+	/**
+	 * Metodo che scrive il documento formattato in XML sul file.
+	 */
 	private void scriviFileXML(){
 		synchronized(gestore){
 			gestore.scriviXML(dati.getDom());
